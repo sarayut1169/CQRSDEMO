@@ -1,10 +1,13 @@
 ﻿using CQRSDEMO.Models.APIs;
+using CQRSDEMO.Modules.Customer.Query.Customer.GetCustomer;
 
 namespace CQRSDEMO.Modules.Customer.Query.Customer.GetCustomerById
 {
-    public class GetCustomerByIdQueryResult
+
+
+
+    public class GetCustomerByIdQueryResult : CQRS.Queries.QueryResult<List<GetCustomerByIdQueryResultData>>
     {
-        public List<GetCustomerByIdQueryResultData> Customers { get; set; } = new();
+        public GetCustomerByIdQueryResultData ResultData { get; set; }
     }
 }
-    

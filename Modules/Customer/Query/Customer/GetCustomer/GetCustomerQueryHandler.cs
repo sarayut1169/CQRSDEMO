@@ -3,10 +3,11 @@ using CQRSDEMO.Models.Entities;
 using CQRSDEMO.Modules.Customer.Query.Customer.GetCustomer;
 using CQRSDEMO.Modules.Customer.Services;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace CQRSDEMO.Modules.Customer.Query.Customer.GetCustomer
 {
-    public class GetCustomerQueryHandler : MediatR.IRequestHandler<GetCustomerQuery, GetCustomerQueryResult>
+    public class GetCustomerQueryHandler : CQRS.Queries.QueryHandler<GetCustomerQuery, GetCustomerQueryResult, List<GetCustomerQueryResultData>>
     {
         private readonly ICustomerService _customerService;
 
@@ -17,28 +18,34 @@ namespace CQRSDEMO.Modules.Customer.Query.Customer.GetCustomer
 
 
 
-        public async Task<GetCustomerQueryResult> Handle(GetCustomerQuery request, CancellationToken cancellationToken)
+        protected override async Task<GetCustomerQueryResult> OnExecute(GetCustomerQuery query, CancellationToken cancellationToken)
         {
-            var customerList = await _customerService.GetAllCustomersAsync();
+            GetCustomerQueryResult result = new GetCustomerQueryResult();
 
-            var customerModels = customerList.Select(x => new GetCustomerQueryResultData
+            List<CustomerModel>? customerList = await _customerService.GetAllCustomersAsync();
+
+            List<GetCustomerQueryResultData> customerModels = customerList.Select(x =>
             {
-                Id = x.Id,
-                Name = x.Name,
-                Email = x.Email,
-                Phone = x.Phone,
-                MembershipType = x.MembershipType,
-                IsGoldShop = x.IsGoldShop,
-                IdCardNumber = x.IdCardNumber,
-                Address = x.Address,
-                CurrentAddress = x.CurrentAddress,
-                DocumentAddress = x.DocumentAddress
+                GetCustomerQueryResultData getCustomerQuery = new GetCustomerQueryResultData
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
+                    Phone = x.Phone,
+                    MembershipType = x.MembershipType,
+                    IsGoldShop = x.IsGoldShop,
+                    IdCardNumber = x.IdCardNumber,
+                    CurrentAddress = x.CurrentAddress,
+                    DocumentAddress = x.DocumentAddress,
+                };
+                return getCustomerQuery;
             }).ToList();
 
-            return new GetCustomerQueryResult
-            {
-                Customers = customerModels
-            };
+            result.IsSuccess = true;
+            result.ResultData = customerModels;
+            result.Total = customerModels.Count;
+
+            return result;
         }
     }   
 }

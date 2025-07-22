@@ -10,7 +10,7 @@ public class CustomerProfile : Profile
     {
         CreateMap<Customer, CustomerModel>();
         CreateMap<CustomerModel, Customer>();
-        CreateMap<CustomerModel, GetCustomerByIdQueryResult>();
-        CreateMap<GetCustomerByIdQueryResult, CustomerModel>();
+    
+     
     }
 }

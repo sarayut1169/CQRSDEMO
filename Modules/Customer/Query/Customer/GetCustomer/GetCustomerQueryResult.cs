@@ -2,9 +2,9 @@
 
 namespace CQRSDEMO.Modules.Customer.Query.Customer.GetCustomer
 {
-    public class GetCustomerQueryResult
+    public class GetCustomerQueryResult : CQRS.Queries.QueryResult<List<GetCustomerQueryResultData>>
     {
-        public List<GetCustomerQueryResultData> Customers { get; set; } = new();
+        
     }
 }
     

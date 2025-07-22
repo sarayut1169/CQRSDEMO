@@ -23,9 +23,6 @@ namespace CQRSDEMO.Modules.Customer.Services
 
 
 
-
-
-
         public async Task<List<CustomerModel>> GetAllCustomersAsync()
         {
             IEnumerable<CQRSDEMO.Models.Entities.Customer> customers = await _customerRepository.GetAllAsync();
@@ -45,6 +42,33 @@ namespace CQRSDEMO.Modules.Customer.Services
             }
             CustomerModel customerModel = _mapper.Map<CustomerModel>(customer);
             return customerModel;
+        }
+
+        public async Task<CustomerModel> CreateCustomerAsync(CustomerModel customerModel)
+        {
+            CQRSDEMO.Models.Entities.Customer customer = _mapper.Map<CQRSDEMO.Models.Entities.Customer>(customerModel);
+            CQRSDEMO.Models.Entities.Customer createdCustomer = await _customerRepository.AddAsync(customer);
+            return _mapper.Map<CustomerModel>(createdCustomer);
+        }
+
+
+        public async Task<CustomerModel> UpdateCustomerAsync(CustomerModel customerModel)
+        {
+            CQRSDEMO.Models.Entities.Customer updatedCustomer = await _customerRepository.UpdateAsync(customerModel);
+            CQRSDEMO.Models.Entities.Customer customer = _mapper.Map<CQRSDEMO.Models.Entities.Customer>(updatedCustomer);
+            
+            return _mapper.Map<CustomerModel>(updatedCustomer);
+        }
+
+        public async Task<bool> DeleteCustomerAsync(int id)
+        {
+            CQRSDEMO.Models.Entities.Customer customer = await _customerRepository.GetAsync(x => x.Id == id);
+            if (customer == null)
+            {
+                return false;
+            }
+            _customerRepository.Delete(customer);
+            return true;
         }
     }
 }

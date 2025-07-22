@@ -4,14 +4,14 @@ using CQRSDEMO.Models.APIs;
 using FluentValidation;
 using MediatR;
 using static CQRSDEMO.Models.APIs.CustomerModel;
-namespace CQRSDEMO.Modules.Customer.Commands.Create
+namespace CQRSDEMO.Modules.Customer.Commands.Update
 {
 
 
     // ตัวอย่าง Query
-    public class CreateCustomerCommand : Query<CreateCustomerCommandResult, List<CreateCustomerCommandResultData>>
+    public class UpdateCustomerCommand : Query<UpdateCustomerCommandResult, List<UpdateCustomerCommandResultData>>
     {
-   
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

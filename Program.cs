@@ -1,6 +1,8 @@
 using CQRSDEMO.CQRS;
 using CQRSDEMO.Models.Repositories.Customer;
 using CQRSDEMO.Modules.Customer.Commands.Create;
+using CQRSDEMO.Modules.Customer.Query.Customer.GetCustomer;
+using CQRSDEMO.Modules.Customer.Query.Customer.GetCustomerById;
 using CQRSDEMO.Modules.Customer.Services;
 
 using MediatR;
@@ -20,7 +22,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateCustomerCommand).Assembly));
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly)
+);
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
         npgsql => npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "wpftest") // ใช้ schema wpftest
